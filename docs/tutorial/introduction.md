@@ -73,7 +73,7 @@ We also used `Prooph\Common\Messaging\PayloadTrait` in conjunction with the `Pro
 to instantiating our command with a `payload` - a simple array - and get access to it using
 `$this->payload` within the message.
 While this is a very easy and fast way to create message classes it is completely optional.
-The most important thing to note here is that `Prooph\Common\Messaging\Command` implements `Prooph\Common\Messaging\Message`
+The most important thing to note here is that `Prooph\Common\Messaging\Command` implements `Prooph\Common\Messaging\Message`.
 
 ```php
 <?php
@@ -116,7 +116,7 @@ interface Message extends HasMessageName
 ```
 The basic contract defines an immutable message with a unique identifier, a type, a created at timestamp,
 a message name (by extending the `HasMessageName` interface), payload and metadata.
-Payload should only contain scalar types and arrays (no objects) and metadata only scalars to be truly immutable.
+Payload should only contain scalar types and arrays (no objects) and metadata – only scalars are truly immutable.
 
 ## Command Query Responsibility Segregation
 
@@ -240,10 +240,10 @@ class UserFinder
 Instead of one service, we have two separate services one for handling the write action
 and one for handling the query. Note that `CreateUserHandler::createUser(): void` no longer returns
 the new user object. The method signature follows a basic rule of CQRS:
-**Write operations don't have a return value**
+**Write operations don't have a return value.**
 
 While this looks like overkill, it enables you to design write and read sides
-independent of each other. Let's look at a read-optimized `UserFinder`
+independent of each other. Let's look at a read-optimized `UserFinder`:
 
 ```php
 <?php
@@ -281,7 +281,7 @@ We can do this because we know that our read model won't do anything with the da
 forwarding it to a client that, for example, requires the data in JSON or XML format.
 If it is guaranteed that no state changes happen within the read model, we don't need to deal with
 objects as we don't need to enforce any rules. Select the data and return it to the client as fast as possible
-that is the target of the read model.
+– that is the target of the read model.
 
 The write model, however, has to protect invariants. At the moment our `user` object does a bad job of this.
 
@@ -359,7 +359,7 @@ class RegisterUserHandler
 
 ```
 
-Finally, we add some prooph flavour and change the method of the handler to handle a prooph message
+Finally, we add some prooph flavour and change the method of the handler to handle a prooph message:
 
 ```php
 <?php
@@ -390,7 +390,7 @@ class RegisterUserHandler
 With a few changes we turned our original `UserService` into two distinct classes supporting the basic idea of CQRS.
 In the last step we enabled the write side to handle a prooph command that expresses its intent of how the system state should change
 (a new user should be registered) using the message name, `RegisterUser`, and payload of the command.
-The `RegisterUserHandler` is a so-called *glue component*. Its task is to take the command and
+The `RegisterUserHandler` is a so-called *glue component*. It's task is to take the command and
 translate the intent into an action performed by the write model (in our case the user).
 Finally, the command handler makes use of the infrastructure (represented by the `UserRepository`) to persist
 the state change caused by the command.
@@ -408,7 +408,7 @@ id  | name     | email
 1   | John Doe | doe@test.com
 
 
-Applying CQRS again we end up with a new command `ChangeEmail`, an appropriate command handler and a matching action
+Applying CQRS again, we end up with a new command `ChangeEmail`, an appropriate command handler and a matching action
 in the write model owned by the responsible object `User::changeEmail`
 
 ```php
@@ -451,7 +451,7 @@ $handler->handle($changeEmail);
 
 ```
 
-will result in an updated database row
+will result in an updated database row:
 
 {.table}
 id  | name     | email
